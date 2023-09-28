@@ -108,7 +108,7 @@ void setup() {
 		delay(1000);
 	}
 
-	WiFiMulti.addAP("VectorVictor", "whatsyour");
+	WiFiMulti.addAP("WIFINAME", "PSWD");
 
 	//WiFi.disconnect();
 	while(WiFiMulti.run() != WL_CONNECTED) {
