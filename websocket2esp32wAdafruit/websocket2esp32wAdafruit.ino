@@ -7,6 +7,7 @@
 
 // For WiFi and socket/data
 WiFiMulti WiFiMulti;
+
 WebSocketsClient webSocket;
 OSCMessage msg;
 OSCErrorCode error;
