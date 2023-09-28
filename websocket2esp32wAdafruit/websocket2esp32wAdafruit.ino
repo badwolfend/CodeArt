@@ -108,7 +108,7 @@ void setup() {
 		delay(1000);
 	}
 
-	WiFiMulti.addAP("WIFINAME", "PSWD");
+	WiFiMulti.addAP("WIFINAME", "PSW");
 
 	//WiFi.disconnect();
 	while(WiFiMulti.run() != WL_CONNECTED) {

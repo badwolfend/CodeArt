@@ -1,7 +1,6 @@
 {
   "name": "max-osc-websocket",
-  "author": "Contra",
-  "license": "MIT",
+  "author": "James",
   "scripts": {
     "start": "node max-osc-websocket.js"
   },
