@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 // For WiFi and socket/data
-WiFiMulti WiFiMulti;
+WiFiMulti WiFiMulti; 
 
 WebSocketsClient webSocket;
 OSCMessage msg;
@@ -42,7 +42,7 @@ void handleNeoPixel(OSCMessage &msg){
   r = msg.getInt(1);
   g = msg.getInt(2);
   b = msg.getInt(3);
-  ring.setPixelColor(led,r,g,b);
+  ring.setPixelColor(1,255,0,0);
   ring.show();
 
   USE_SERIAL.printf("/led: n->%d, r->%d, g->%d, b->%d \n", led, r, g, b);
@@ -95,6 +95,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 }
 
 void setup() {
+  ring.clear();
 
 	// USE_SERIAL.begin(921600);
 	USE_SERIAL.begin(115200);
@@ -108,7 +109,7 @@ void setup() {
 		delay(1000);
 	}
 
-	WiFiMulti.addAP("WIFINAME", "PSW");
+	WiFiMulti.addAP("x", "x");
 
 	//WiFi.disconnect();
 	while(WiFiMulti.run() != WL_CONNECTED) {
@@ -116,7 +117,7 @@ void setup() {
 	}
 
 	// server address, port and URL
-	webSocket.begin("192.168.1.19", 12345, "/");
+	webSocket.begin("192.168.1.10", 12345, "/");
 
 	// // event handler
 	webSocket.onEvent(webSocketEvent);
