@@ -60,39 +60,39 @@ wss.on("connection", function connection(ws) {
 
 
 	
-// 	// Handle the Max interactions here...
-// 	maxAPI.addHandler("send1", (...args) => {
-// 		//console.log("send args: " + args);
-// 		if (webSocketPort && isConnected) {
-// 			webSocketPort.send({
-// 				address: "/max/led",
-// 				args: [
-// 					{
-// 						type: "i",
-// 						value: args[0],
-// 					},
-// 					{
-// 						type: "i",
-// 						value: args[1],
-// 					},
-// 					{
-// 						type: "i",
-// 						value: args[2],
-// 					},
-// 					{
-// 						type: "i",
-// 						value: args[3],
-// 					}
-// 				],
+	// Handle the Max interactions here...
+	maxAPI.addHandler("send4ints", (...args) => {
+		//console.log("send args: " + args);
+		if (webSocketPort && isConnected) {
+			webSocketPort.send({
+				address: "/max/led",
+				args: [
+					{
+						type: "i",
+						value: args[0],
+					},
+					{
+						type: "i",
+						value: args[1],
+					},
+					{
+						type: "i",
+						value: args[2],
+					},
+					{
+						type: "i",
+						value: args[3],
+					}
+				],
 				
-// 			});
-// 		}
+			});
+		}
 
-// 	});
+	});
 // });
 
 	// Handle the Max interactions here...
-	maxAPI.addHandler("send1", (...args) => {
+	maxAPI.addHandler("send1int", (...args) => {
 		//console.log("send args: " + args);
 		if (webSocketPort && isConnected) {
 			webSocketPort.send({
