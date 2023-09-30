@@ -3873,3 +3873,6 @@ Max/node_modules/ws/lib/websocket-server.js
 Max/node_modules/ws/lib/websocket.js
 Max/package-lock.json
 Max/npm-debug-u44083570008.log
+TestOSCLibrary/secrets.h
+websocket2esp32Encoder_testing/secrets.h
+websocket2esp32wAdafruit/secrets.h

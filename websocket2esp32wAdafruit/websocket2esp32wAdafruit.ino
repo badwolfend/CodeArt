@@ -4,12 +4,12 @@
 #include <WebSocketsClient.h>
 #include <OSCMessage.h>
 #include <Adafruit_NeoPixel.h>
-
+#include "secrets.h"
 // For WiFi and socket/data
-WiFiMulti WiFiMulti; 
-
+WiFiMulti WiFiMulti;
 WebSocketsClient webSocket;
 OSCMessage msg;
+OSCMessage m2e;
 OSCErrorCode error;
 
 // For NeoPixel
@@ -18,6 +18,7 @@ const int pixelPin = 9;
 Adafruit_NeoPixel ring = Adafruit_NeoPixel(numPixels, pixelPin);
 
 #define USE_SERIAL Serial
+#define PAULSSUGGESTION False
 
 void hexdump(const void *mem, uint32_t len, uint8_t cols = 16) {
 	const uint8_t* src = (const uint8_t*) mem;
@@ -42,7 +43,8 @@ void handleNeoPixel(OSCMessage &msg){
   r = msg.getInt(1);
   g = msg.getInt(2);
   b = msg.getInt(3);
-  ring.setPixelColor(1,255,0,0);
+  ring.setPixelColor(led,r,g,b);
+
   ring.show();
 
   USE_SERIAL.printf("/led: n->%d, r->%d, g->%d, b->%d \n", led, r, g, b);
@@ -64,7 +66,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 			break;
 		case WStype_BIN:
 			USE_SERIAL.printf("[WSc] get binary length: %u\n", length);
-			hexdump(payload, length);
+			// hexdump(payload, length);
       int size;
       size = length;
       // Need to fill OSC data structure with packet
@@ -81,8 +83,23 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       Serial.println(error);
       }
     }
-            
-      webSocket.sendBIN(payload, length);
+
+			// const char * message = msg.send();     
+      // webSocket.sendBIN(msg.bytes(), length);
+			// Print p;
+			// m2e.send(p);
+			// Serial.println("Two packets->Begin");
+			// Serial.println(msg.bytes());
+			// hexdump(payload, length);
+			// uint8_t* encodedMessage;
+			// encodedMessage = encodeOSCMessage(&msg, &length);
+			// hexdump(encodedMessage, length);
+			// hexdump(payload, length);
+			// Serial.println("Two packets->End");
+			// webSocket.sendBIN(encodedMessage, length);
+
+			webSocket.sendBIN(payload, length);
+
 			break;
 		  case WStype_ERROR:			
 		  case WStype_FRAGMENT_TEXT_START:
@@ -95,7 +112,6 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 }
 
 void setup() {
-  ring.clear();
 
 	// USE_SERIAL.begin(921600);
 	USE_SERIAL.begin(115200);
@@ -109,7 +125,7 @@ void setup() {
 		delay(1000);
 	}
 
-	WiFiMulti.addAP("x", "x");
+	WiFiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
 
 	//WiFi.disconnect();
 	while(WiFiMulti.run() != WL_CONNECTED) {
@@ -117,7 +133,7 @@ void setup() {
 	}
 
 	// server address, port and URL
-	webSocket.begin("192.168.1.10", 12345, "/");
+	webSocket.begin(IP_ADDR, PORT, "/");
 
 	// // event handler
 	webSocket.onEvent(webSocketEvent);
