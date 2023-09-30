@@ -4,7 +4,7 @@
 #include <WebSocketsClient.h>
 #include <OSCMessage.h>
 #include <Adafruit_NeoPixel.h>
-
+#include "secrets.h"
 // For WiFi and socket/data
 WiFiMulti WiFiMulti;
 WebSocketsClient webSocket;
@@ -125,7 +125,7 @@ void setup() {
 		delay(1000);
 	}
 
-	WiFiMulti.addAP("DOMAIN", "PSWD");
+	WiFiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
 
 	//WiFi.disconnect();
 	while(WiFiMulti.run() != WL_CONNECTED) {
@@ -133,7 +133,7 @@ void setup() {
 	}
 
 	// server address, port and URL
-	webSocket.begin("192.168.1.19", 12345, "/");
+	webSocket.begin(IP_ADDR, PORT, "/");
 
 	// // event handler
 	webSocket.onEvent(webSocketEvent);

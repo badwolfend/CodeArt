@@ -2,7 +2,7 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <WebSocketsClient.h>
-
+#include "secrets.h"
 
 // For WiFi and socket/data
 WiFiMulti wfMulti;
@@ -181,7 +181,7 @@ void setup() {
 		delay(1000);
 	}
 
-	wfMulti.addAP("DOMAIN", "PSWD");
+	wfMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
 
 	//WiFi.disconnect();
 	while(wfMulti.run() != WL_CONNECTED) {
@@ -189,7 +189,7 @@ void setup() {
 	}
 
 	// server address, port and URL
-	webSocket.begin("192.168.1.19", 12345, "/");
+	webSocket.begin(IP_ADDR, PORT, "/");
 
 	// // event handler
 	webSocket.onEvent(webSocketEvent);
