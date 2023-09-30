@@ -61,7 +61,8 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       // Add arguments to the OSCMessage using the setter function
       float floatValue = Signal;
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_FLOAT32, &floatValue, sizeof(float));
-
+			// oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &intValue, sizeof(int32_t));
+			// oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)stringValue, strlen(stringValue) + 1); // +1 for null terminator
       size_t encodedLength;
 
       // Encode the OSC message
@@ -120,11 +121,11 @@ void loop() {
   //  Serial.println(Signal);                    // Send the Signal value to Serial Plotter.
 
 
-  //  if(Signal > THRESHOLD){                          // If the signal is above "550", then "turn-on" Arduino's on-Board LED.
-  //    digitalWrite(PULSE_BLINK,HIGH);
-  //  } else {
-  //    digitalWrite(PULSE_BLINK,LOW);                //  Else, the sigal must be below "550", so "turn-off" this LED.
-  //  }
+   if(Signal > THRESHOLD){                          // If the signal is above "550", then "turn-on" Arduino's on-Board LED.
+     digitalWrite(PULSE_BLINK,HIGH);
+   } else {
+     digitalWrite(PULSE_BLINK,LOW);                //  Else, the sigal must be below "550", so "turn-off" this LED.
+   }
 
 	webSocket.loop();
 }
