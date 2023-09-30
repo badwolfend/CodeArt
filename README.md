@@ -20,7 +20,7 @@ To use OSCMLite in your project, you'll need to include the library and follow t
 4. Send the encoded message or decode received OSC messages as needed.
 
 ## Example
-Here's a simple example that is contained in the TESTOSCMLite project folder:
+Here's a simple example that is contained in the TESTOSCLibrary project folder:
 ```c
 // Create an OSCMessage object using the constructor-like function
 OSCMLite* oscMsg = oscm.createOSCMessage("/max/led", ",ifs");
