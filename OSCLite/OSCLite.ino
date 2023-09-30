@@ -222,7 +222,7 @@ void setup() {
 		delay(1000);
 	}
 
-	wfMulti.addAP("VectorVictor", "whatsyour");
+	wfMulti.addAP("DOMAIN", "PSWD");
 
 	//WiFi.disconnect();
 	while(wfMulti.run() != WL_CONNECTED) {

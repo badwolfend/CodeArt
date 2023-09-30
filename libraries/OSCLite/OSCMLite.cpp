@@ -99,6 +99,7 @@ uint8_t* OSCMLite::encodeOSCMessage(const struct OSCMLite *message, size_t *enco
     for (int i=0; i<diff; i++) {
           encodedData[currentPosition++]=0;
     }
+    
     // currentPosition += paddedAddressLength;
     memcpy(encodedData + currentPosition, message->typeTag, typeTagLength);
     currentPosition += typeTagLength;

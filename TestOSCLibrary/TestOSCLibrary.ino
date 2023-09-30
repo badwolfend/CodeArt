@@ -82,7 +82,7 @@ void setup() {
 		delay(1000);
 	}
 
-	wfMulti.addAP("VectorVictor", "whatsyour");
+	wfMulti.addAP("DMN", "PSWD");
 
 	//WiFi.disconnect();
 	while(wfMulti.run() != WL_CONNECTED) {

@@ -125,7 +125,7 @@ void setup() {
 		delay(1000);
 	}
 
-	WiFiMulti.addAP("VectorVictor", "whatsyour");
+	WiFiMulti.addAP("DOMAIN", "PSWD");
 
 	//WiFi.disconnect();
 	while(WiFiMulti.run() != WL_CONNECTED) {
@@ -145,72 +145,3 @@ void setup() {
 void loop() {
 	webSocket.loop();
 }
-
-// void send(OSCMessage * msg, uint8_t * p, int len){
-//     uint8_t nullChar = '\0';
-//     //send the address
-//     int addrLen = strlen(msg->getAddress()) + 1;
-//     //padding amount
-//     int addrPad = padSize(addrLen);
-// 		hexdump(msg->getAddress(), addrLen);	
-
-// }
-
-// Function to encode an OSC message into a byte array
-// uint8_t* encodeOSCMessage(OSCMessage *message, size_t *encodedLength) {
-//     size_t addressLength = strlen(message->getAddress());
-//     size_t paddedAddressLength = (addressLength + 4) & ~3; // Ensure 4-byte alignment
-    
-//     *encodedLength = paddedAddressLength + message->bytes();
-//     uint8_t *encodedData = (uint8_t*)malloc(*encodedLength);
-//     if (!encodedData) {
-//         return NULL; // Memory allocation failed
-//     }
-    
-//     // Copy the OSC address and pad with null bytes
-// 		const char* addr = message->getAddress();
-//     // strcpy((char*)encodedData, addr);
-//     // memset(encodedData + addressLength + 1, 0, paddedAddressLength - addressLength);
-    
-//     // Copy the OSC message data
-//     // memcpy(encodedData + paddedAddressLength, message->data, message->dataCount);
-    
-//     return encodedData;
-// }
-
-// Function to encode an OSC message into a byte array
-// uint8_t* encodeOSCMessage(const struct OSCMessage *message, size_t *encodedLength) {
-//     size_t addressLength = strlen(message->getAddress());
-//     size_t typeTagLength = strlen(message->typeTag);
-    
-//     // Calculate the total size needed for encoding the message
-//     size_t totalSize = 1 + addressLength + 1 + typeTagLength;
-//     for (size_t i = 0; i < message->numArguments; i++) {
-//         totalSize += message->arguments[i].size;
-//     }
-    
-//     *encodedLength = totalSize;
-//     uint8_t *encodedData = (uint8_t*)malloc(*encodedLength);
-//     if (!encodedData) {
-//         return NULL; // Memory allocation failed
-//     }
-    
-//     size_t currentPosition = 0;
-    
-//     // Write the OSC address and type tag
-//     encodedData[currentPosition++] = '/';
-//     memcpy(encodedData + currentPosition, message->address, addressLength);
-//     currentPosition += addressLength;
-    
-//     encodedData[currentPosition++] = ',';
-//     memcpy(encodedData + currentPosition, message->typeTag, typeTagLength);
-//     currentPosition += typeTagLength;
-    
-//     // Encode OSC arguments
-//     for (size_t i = 0; i < message->numArguments; i++) {
-//         memcpy(encodedData + currentPosition, message->arguments[i].data, message->arguments[i].size);
-//         currentPosition += message->arguments[i].size;
-//     }
-    
-//     return encodedData;
-// }
