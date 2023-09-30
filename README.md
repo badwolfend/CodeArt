@@ -20,6 +20,47 @@ To use OSCMLite in your project, you'll need to include the library and follow t
 4. Send the encoded message or decode received OSC messages as needed.
 
 ## Example
-Here's a simple example:
+Here's a simple example that is contained in the TESTOSCMLite project folder:
+```c
+// Create an OSCMessage object using the constructor-like function
+OSCMLite* oscMsg = oscm.createOSCMessage("/max/led", ",ifs");
+```
+Here we create the oscMsg with address "/max/led" and with 3 types of data (arguments) int32 (i), float32 (f) and string (s). 
 
+
+Next, add values to the OSCMessage.
+```c
+// Add arguments to the OSCMessage using the setter function
+int32_t intValue = 1;
+float floatValue = 9.109383701;
+const char* stringValue = "Hello, MAX!";
+      
+oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &intValue, sizeof(int32_t));
+oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_FLOAT32, &floatValue, sizeof(float));
+oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)stringValue, strlen(stringValue) + 1); // +1 for null terminator
+```
+Here we have used ``` addOSCArgument() ``` to add the three values to our OSC object.  The function requires us to give the OSCMLite object address, the data type, the value to add, and the total size of the data you will be adding.  
+
+Next, we will encode this object in an integer array of bytes.  This would be the data you would package in a UDP/TCP packet.  This encoding is the primary reason for this library.  Since we get the raw data in the packet, we can put it in any transmission protocol we want.  
+
+```c
+size_t encodedLength;
+
+// Encode the OSC message
+uint8_t *encodedMessage = oscm.encodeOSCMessage(oscMsg, &encodedLength);
+Serial.println("\t Encoded Message");
+hexdump(encodedMessage, encodedLength);
+```
+Here we have simply used the ``` encodeOSCMessage() ``` to take our previously defined OSCLite structure and encode it in a byte array ``` uint8_t encodedMessage ```, which can then be put inside a packet.  
+
+And finally, we just print out the HEX to serial, send the packet through a websocket and then cleanup and free the memory of the object.
+
+```c
+Serial.println(encodedLength);
+Serial.println("\t End Encoded Message");
+webSocket.sendBIN(encodedMessage, encodedLength);
+
+// Cleanup
+oscm.destroyOSCMessage(oscMsg);
+```
 
