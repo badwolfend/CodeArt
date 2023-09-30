@@ -7,9 +7,9 @@
 
 // For WiFi and socket/data
 WiFiMulti WiFiMulti;
-
 WebSocketsClient webSocket;
 OSCMessage msg;
+OSCMessage m2e;
 OSCErrorCode error;
 
 // For NeoPixel
@@ -18,6 +18,7 @@ const int pixelPin = 9;
 Adafruit_NeoPixel ring = Adafruit_NeoPixel(numPixels, pixelPin);
 
 #define USE_SERIAL Serial
+#define PAULSSUGGESTION False
 
 void hexdump(const void *mem, uint32_t len, uint8_t cols = 16) {
 	const uint8_t* src = (const uint8_t*) mem;
@@ -43,6 +44,7 @@ void handleNeoPixel(OSCMessage &msg){
   g = msg.getInt(2);
   b = msg.getInt(3);
   ring.setPixelColor(led,r,g,b);
+
   ring.show();
 
   USE_SERIAL.printf("/led: n->%d, r->%d, g->%d, b->%d \n", led, r, g, b);
@@ -64,7 +66,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 			break;
 		case WStype_BIN:
 			USE_SERIAL.printf("[WSc] get binary length: %u\n", length);
-			hexdump(payload, length);
+			// hexdump(payload, length);
       int size;
       size = length;
       // Need to fill OSC data structure with packet
@@ -81,8 +83,23 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       Serial.println(error);
       }
     }
-            
-      webSocket.sendBIN(payload, length);
+
+			// const char * message = msg.send();     
+      // webSocket.sendBIN(msg.bytes(), length);
+			// Print p;
+			// m2e.send(p);
+			// Serial.println("Two packets->Begin");
+			// Serial.println(msg.bytes());
+			// hexdump(payload, length);
+			// uint8_t* encodedMessage;
+			// encodedMessage = encodeOSCMessage(&msg, &length);
+			// hexdump(encodedMessage, length);
+			// hexdump(payload, length);
+			// Serial.println("Two packets->End");
+			// webSocket.sendBIN(encodedMessage, length);
+
+			webSocket.sendBIN(payload, length);
+
 			break;
 		  case WStype_ERROR:			
 		  case WStype_FRAGMENT_TEXT_START:
@@ -108,7 +125,7 @@ void setup() {
 		delay(1000);
 	}
 
-	WiFiMulti.addAP("WIFINAME", "PSW");
+	WiFiMulti.addAP("VectorVictor", "whatsyour");
 
 	//WiFi.disconnect();
 	while(WiFiMulti.run() != WL_CONNECTED) {
@@ -128,3 +145,72 @@ void setup() {
 void loop() {
 	webSocket.loop();
 }
+
+// void send(OSCMessage * msg, uint8_t * p, int len){
+//     uint8_t nullChar = '\0';
+//     //send the address
+//     int addrLen = strlen(msg->getAddress()) + 1;
+//     //padding amount
+//     int addrPad = padSize(addrLen);
+// 		hexdump(msg->getAddress(), addrLen);	
+
+// }
+
+// Function to encode an OSC message into a byte array
+// uint8_t* encodeOSCMessage(OSCMessage *message, size_t *encodedLength) {
+//     size_t addressLength = strlen(message->getAddress());
+//     size_t paddedAddressLength = (addressLength + 4) & ~3; // Ensure 4-byte alignment
+    
+//     *encodedLength = paddedAddressLength + message->bytes();
+//     uint8_t *encodedData = (uint8_t*)malloc(*encodedLength);
+//     if (!encodedData) {
+//         return NULL; // Memory allocation failed
+//     }
+    
+//     // Copy the OSC address and pad with null bytes
+// 		const char* addr = message->getAddress();
+//     // strcpy((char*)encodedData, addr);
+//     // memset(encodedData + addressLength + 1, 0, paddedAddressLength - addressLength);
+    
+//     // Copy the OSC message data
+//     // memcpy(encodedData + paddedAddressLength, message->data, message->dataCount);
+    
+//     return encodedData;
+// }
+
+// Function to encode an OSC message into a byte array
+// uint8_t* encodeOSCMessage(const struct OSCMessage *message, size_t *encodedLength) {
+//     size_t addressLength = strlen(message->getAddress());
+//     size_t typeTagLength = strlen(message->typeTag);
+    
+//     // Calculate the total size needed for encoding the message
+//     size_t totalSize = 1 + addressLength + 1 + typeTagLength;
+//     for (size_t i = 0; i < message->numArguments; i++) {
+//         totalSize += message->arguments[i].size;
+//     }
+    
+//     *encodedLength = totalSize;
+//     uint8_t *encodedData = (uint8_t*)malloc(*encodedLength);
+//     if (!encodedData) {
+//         return NULL; // Memory allocation failed
+//     }
+    
+//     size_t currentPosition = 0;
+    
+//     // Write the OSC address and type tag
+//     encodedData[currentPosition++] = '/';
+//     memcpy(encodedData + currentPosition, message->address, addressLength);
+//     currentPosition += addressLength;
+    
+//     encodedData[currentPosition++] = ',';
+//     memcpy(encodedData + currentPosition, message->typeTag, typeTagLength);
+//     currentPosition += typeTagLength;
+    
+//     // Encode OSC arguments
+//     for (size_t i = 0; i < message->numArguments; i++) {
+//         memcpy(encodedData + currentPosition, message->arguments[i].data, message->arguments[i].size);
+//         currentPosition += message->arguments[i].size;
+//     }
+    
+//     return encodedData;
+// }
